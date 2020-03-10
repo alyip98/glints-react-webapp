@@ -19,7 +19,7 @@ describe('App', () => {
     ).toEqual([]);
   });
 
-  describe('when `FoodSearch` invokes `onFoodClick` twice', () => {
+  describe('when `RestaurantSearch` invokes `onFoodClick` twice', () => {
     const food1 = {
       description: 'Sample food 1',
       kcal: '100.0',
@@ -39,11 +39,11 @@ describe('App', () => {
 
     beforeEach(() => {
       foods.forEach(food => (
-        wrapper.find('FoodSearch').props().onFoodClick(food)
+        wrapper.find('RestaurantSearch').props().onFoodClick(food)
       ));
     });
 
-    it('should add the foods to `selectedFoods`', () => {
+    it('should add the restaurants to `selectedFoods`', () => {
       expect(
         wrapper.state().selectedFoods,
       ).toEqual(foods);

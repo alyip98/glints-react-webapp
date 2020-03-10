@@ -3,9 +3,10 @@ import Client from "./Client";
 
 const MATCHING_ITEM_LIMIT = 25;
 
-class FoodSearch extends React.Component {
+class RestaurantSearch extends React.Component {
   state = {
-    foods: [],
+    restaurants: [],
+    date: new Date(),
     showRemoveIcon: false,
     searchValue: ""
   };
@@ -19,7 +20,7 @@ class FoodSearch extends React.Component {
 
     if (value === "") {
       this.setState({
-        foods: [],
+        restaurants: [],
         showRemoveIcon: false
       });
     } else {
@@ -27,9 +28,9 @@ class FoodSearch extends React.Component {
         showRemoveIcon: true
       });
 
-      Client.search(value, foods => {
+      Client.search(value, restaurants => {
         this.setState({
-          foods: foods.slice(0, MATCHING_ITEM_LIMIT)
+          restaurants: restaurants.slice(0, MATCHING_ITEM_LIMIT)
         });
       });
     }
@@ -37,28 +38,38 @@ class FoodSearch extends React.Component {
 
   handleSearchCancel = () => {
     this.setState({
-      foods: [],
+      restaurants: [],
       showRemoveIcon: false,
       searchValue: ""
     });
   };
 
+  handleDateChange = date => {
+    console.log(date);
+    this.setState({
+      date: date
+    })
+  };
+
   render() {
-    const { showRemoveIcon, foods } = this.state;
+    const { showRemoveIcon, restaurants } = this.state;
     const removeIconStyle = showRemoveIcon ? {} : { visibility: "hidden" };
 
-    const foodRows = foods.map((food, idx) => (
-      <tr key={idx} onClick={() => this.props.onFoodClick(food)}>
-        <td>{food.description}</td>
-        <td className="right aligned">{food.kcal}</td>
-        <td className="right aligned">{food.protein_g}</td>
-        <td className="right aligned">{food.fat_g}</td>
-        <td className="right aligned">{food.carbohydrate_g}</td>
+    const restaurantRows = restaurants.map((restaurant, idx) => (
+      <tr key={idx}>
+        <td>{restaurant.restaurant_name}</td>
+        <td className="right aligned">{restaurant.mon}</td>
+        <td className="right aligned">{restaurant.tue}</td>
+        <td className="right aligned">{restaurant.wed}</td>
+        <td className="right aligned">{restaurant.thu}</td>
+        <td className="right aligned">{restaurant.fri}</td>
+        <td className="right aligned">{restaurant.sat}</td>
+        <td className="right aligned">{restaurant.sun}</td>
       </tr>
     ));
 
     return (
-      <div id="food-search">
+      <div id="restaurant-search">
         <table className="ui selectable structured large table">
           <thead>
             <tr>
@@ -68,7 +79,7 @@ class FoodSearch extends React.Component {
                     <input
                       className="prompt"
                       type="text"
-                      placeholder="Search foods..."
+                      placeholder="Search restaurants..."
                       value={this.state.searchValue}
                       onChange={this.handleSearchChange}
                     />
@@ -83,15 +94,18 @@ class FoodSearch extends React.Component {
               </th>
             </tr>
             <tr>
-              <th className="eight wide">Description</th>
-              <th>Kcal</th>
-              <th>Protein (g)</th>
-              <th>Fat (g)</th>
-              <th>Carbs (g)</th>
+              <th className="eight wide">Name</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
             </tr>
           </thead>
           <tbody>
-            {foodRows}
+            {restaurantRows}
           </tbody>
         </table>
       </div>
@@ -99,4 +113,4 @@ class FoodSearch extends React.Component {
   }
 }
 
-export default FoodSearch;
+export default RestaurantSearch;

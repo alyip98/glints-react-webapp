@@ -5,7 +5,7 @@ import SelectedFoods from '../src/SelectedFoods';
 describe('SelectedFoods', () => {
   let wrapper;
 
-  describe('when prop `foods` is blank', () => {
+  describe('when prop `restaurants` is blank', () => {
     beforeEach(() => {
       wrapper = shallow(
         <SelectedFoods
@@ -27,7 +27,7 @@ describe('SelectedFoods', () => {
     });
   });
 
-  describe('when `foods` is populated', () => {
+  describe('when `restaurants` is populated', () => {
     const foods = [
       {
         description: 'Sample food 1',
@@ -56,7 +56,7 @@ describe('SelectedFoods', () => {
       );
     });
 
-    it('should display the foods in the table', () => {
+    it('should display the restaurants in the table', () => {
       expect(
         wrapper.find('tbody tr').length,
       ).toEqual(foods.length);

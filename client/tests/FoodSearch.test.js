@@ -1,18 +1,18 @@
 
 import { shallow } from 'enzyme';
 import React from 'react';
-import FoodSearch from '../src/FoodSearch';
+import RestaurantSearch from '../src/RestaurantSearch';
 import Client from '../src/Client';
 
 jest.mock('../src/Client');
 
-describe('FoodSearch', () => {
+describe('RestaurantSearch', () => {
   let wrapper;
   const onFoodClick = jest.fn();
 
   beforeEach(() => {
     wrapper = shallow(
-      <FoodSearch
+      <RestaurantSearch
         onFoodClick={onFoodClick}
       />,
     );
@@ -91,9 +91,9 @@ describe('FoodSearch', () => {
         wrapper.update();
       });
 
-      it('should set the state property `foods`', () => {
+      it('should set the state property `restaurants`', () => {
         expect(
-          wrapper.state().foods,
+          wrapper.state().restaurants,
         ).toEqual(foods);
       });
 
@@ -147,9 +147,9 @@ describe('FoodSearch', () => {
             wrapper.update();
           });
 
-          it('should set the state property `foods`', () => {
+          it('should set the state property `restaurants`', () => {
             expect(
-              wrapper.state().foods,
+              wrapper.state().restaurants,
             ).toEqual([]);
           });
         });
@@ -163,9 +163,9 @@ describe('FoodSearch', () => {
           });
         });
 
-        it('should set the state property `foods`', () => {
+        it('should set the state property `restaurants`', () => {
           expect(
-            wrapper.state().foods,
+            wrapper.state().restaurants,
           ).toEqual([]);
         });
 
@@ -182,9 +182,9 @@ describe('FoodSearch', () => {
           icon.simulate('click');
         });
 
-        it('should set the state property `foods`', () => {
+        it('should set the state property `restaurants`', () => {
           expect(
-            wrapper.state().foods,
+            wrapper.state().restaurants,
           ).toEqual([]);
         });
 
