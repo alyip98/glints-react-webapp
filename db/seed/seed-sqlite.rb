@@ -38,10 +38,11 @@ print "\nWorking..."
 
 dir = File.dirname(File.expand_path(__FILE__))
 lineno = 1
-CSV.foreach(File.join(dir, 'processed-hours.csv'), {:encoding => 'UTF8'}) do |row|
+CSV.foreach(File.join(dir, 'processed-hours.csv'), {:encoding => 'ISO8859-1'}) do |row|
   lineno = $.
-
-  next if lineno == 1
+  # print row
+  # print "\n"
+  # next if lineno == 1
   print '.' if lineno % 1000 == 0
 
   # Humanize descriptions

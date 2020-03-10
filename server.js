@@ -1,10 +1,10 @@
 const express = require("express");
 const fs = require("fs");
-const sqlite = require("sql.js");
+const sqlite = require("sqlite3");
 
-const filebuffer = fs.readFileSync("db/usda-nnd.sqlite3");
+// const filebuffer = fs.readFileSync("db/hours.sqlite3");
 
-const db = new sqlite.Database(filebuffer);
+const db = new sqlite.Database("db/hours.sqlite3");
 
 const app = express();
 
@@ -15,16 +15,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-const COLUMNS = [
-  "carbohydrate_g",
-  "protein_g",
-  "fa_sat_g",
-  "fa_mono_g",
-  "fa_poly_g",
-  "kcal",
-  "description"
-];
-app.get("/api/food", (req, res) => {
+const COLUMNS = ['restaurant_name', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+app.get("/api/restaurants", (req, res) => {
   const param = req.query.q;
 
   if (!param) {
@@ -36,36 +28,23 @@ app.get("/api/food", (req, res) => {
 
   // WARNING: Not for production use! The following statement
   // is not protected against SQL injections.
-  const r = db.exec(
+  const r = db.all(
     `
-    select ${COLUMNS.join(", ")} from entries
-    where description like '%${param}%'
+    select * from entries
+    where restaurant_name like ?
     limit 100
-  `
+  `, [`%${param}%`],
+    (err, rows) => {
+      err ? res.json(err) : res.json(rows);
+    }
   );
-
-  if (r[0]) {
-    res.json(
-      r[0].values.map(entry => {
-        const e = {};
-        COLUMNS.forEach((c, idx) => {
-          // combine fat columns
-          if (c.match(/^fa_/)) {
-            e.fat_g = e.fat_g || 0.0;
-            e.fat_g = (parseFloat(e.fat_g, 10) +
-              parseFloat(entry[idx], 10)).toFixed(2);
-          } else {
-            e[c] = entry[idx];
-          }
-        });
-        return e;
-      })
-    );
-  } else {
-    res.json([]);
-  }
 });
 
 app.listen(app.get("port"), () => {
   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
+});
+
+
+db.all(`SELECT restaurant_name FROM entries WHERE restaurant_name like ? LIMIT 1`, ['%hugh%'], (err, rows) => {
+  console.log(err, rows);
 });
